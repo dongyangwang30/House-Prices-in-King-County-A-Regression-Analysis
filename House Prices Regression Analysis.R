@@ -214,6 +214,21 @@ ggplot(df, aes(x = lat, y = price)) +
 boxplot(df$price ~ df$waterfront)
 boxplot(df$price ~ df$renovation)
 
+# Step 7: Create a Pearson Correlation Table for numerical values
+Pearson=cor(select(df,-c(view,condition,grade,zipcode,renovation))
+            , method = c("pearson"))
+
+symnum(Pearson, abbr.colnames = FALSE)
+# So we know what variables to include in the regression: bedrooms, bathrooms, sqft_above,
+# sqft_basement, lat, sqft_living15, total_area_except_lot
+
+# install.packages('corrplot')
+library(corrplot)
+corrplot(Pearson, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+# Collinearity issues: yr_built vs. last_renovated & yrs_present; total_area_except_lot vs. sqft_above & sqft_living15
+# Basically good because important ones do not correlate > 0.7
 
 ##########################Linear Regression############################
 
